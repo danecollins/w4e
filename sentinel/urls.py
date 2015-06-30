@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, url
 from sentinel import views
 
+
 urlpatterns = patterns('',
                        url(r'^list/$', views.list),
                        url(r'^add/$', views.add),
