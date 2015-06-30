@@ -1,0 +1,22 @@
+{% extends "registration/registration_base.html" %}
+{% load i18n %}
+
+{% block title %}Sign up for Watch for Events
+
+{% endblock %}
+
+{% block content %}
+<form class="pure-form-stacked" method="post" action="">
+    {% csrf_token %}
+    <div>
+        {{ form.as_p }}
+    </div>
+    <input type="submit" value="{% trans 'Submit' %}" />
+</form>
+
+{% endblock %}
+
+
+{% comment %}
+**registration/registration_form.html**
+{% endcomment %}
