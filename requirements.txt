@@ -8,3 +8,4 @@ requests==2.7.0
 pytz==2015.4
 twilio==4.4.0
 python-postmark>=0.4.3
+python-registration-redux>=1.2
