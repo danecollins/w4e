@@ -1,0 +1,54 @@
+#!/bin/bash
+
+server="heroku"
+app="w4e"
+
+TEST_COMMAND="python manage.py test"
+PUSH_COMMAND="git push $server master"
+MIGRATE_COMMAND="heroku run python manage.py migrate --app $app"
+
+echo "Running tests..."
+cd ~/src/w4e
+source ~/env/w4e/bin/activate
+echo Executing: $TEST_COMMAND
+$TEST_COMMAND
+
+if [ $? != 0 ]; then
+	echo "TESTS FAILED."
+	echo "Deployment HALTED."
+	exit 1
+fi
+
+echo "Checking git status..."
+git_status=`git status -s`
+if [ "$git_status" != "" ]; then
+	echo "Git not up to date"
+	echo "------------------------"
+	echo "$git_status"
+	echo "------------------------"
+	echo "Exiting."
+	exit 1
+fi
+git_branch_status=`git status -sb`
+if [ "$git_branch_status" != "## master...origin/master" ]; then
+	echo "Origin Master is not up to date"
+	echo "------------------------"
+       	echo "$git_branch_status"
+	echo "------------------------"
+	echo "Exiting."
+	exit 1
+fi
+
+echo "Pushing code to *** $server ***"
+echo "------------------------------------"
+echo Executing: $PUSH_COMMAND
+$PUSH_COMMAND
+if [ $? -ne 0 ]; then
+	echo "Deployment FAILED"
+	exit 1
+fi
+
+echo "Running migrate"
+$MIGRATE_COMMAND
+
+echo "Deployment SUCCESSFUL"
