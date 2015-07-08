@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 import string
 import random
@@ -11,6 +12,7 @@ def id_generator(size=8, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
 
+# ################################################################################# EVENT
 class Event(models.Model):
     LOG = 'LOG'
     NOTIFICATION = 'NOT'
@@ -46,20 +48,25 @@ class Event(models.Model):
         return 'Event({},{},{}'.format(self.tag, self.time, self.log_type)
 
 
+# ############################################################################## SENTINEL
+
+
 class Sentinel(models.Model):
-    name = models.CharField(max_length=40)
+    name = models.CharField(max_length=50)
     tag = models.CharField(max_length=8)
     freq = models.IntegerField()
+    user = models.ForeignKey(User)
     active = models.BooleanField(default=True, blank=True)
 
     def __str__(self):
-        return 'Sentinel({},{},{},{})'.format(self.name,
-                                             self.tag,
-                                             self.freq,
-                                             self.active)
+        return 'Sentinel({},{},{},{},{})'.format(self.name,
+                                                 self.user,
+                                                 self.tag,
+                                                 self.freq,
+                                                 self.active)
 
     def __repr__(self):
         return "Sentinel(name='{}', tag='{}', freq={}, active={})".format(self.name,
-                                                                         self.tag,
-                                                                         self.freq,
-                                                                         self.active)
+                                                                          self.tag,
+                                                                          self.freq,
+                                                                          self.active)
