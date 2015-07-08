@@ -4,12 +4,16 @@ from sentinel.models import Sentinel
 
 
 class SentinelAddForm(forms.ModelForm):
-    required_css_class = 'required'
     class Meta:
         model = Sentinel
         fields = ['name', 'tag', 'freq']
+        labels = {
+            'name': ('Name (required)'),
+            'freq': ('Frequency (required)')
+        }
         widgets = {
             'name': forms.TextInput(attrs={'class': "large"}),
+            'tag': forms.TextInput(attrs={'hidden': True})
         }
 
 
@@ -18,7 +22,7 @@ class SentinelEditForm(forms.ModelForm):
     large = forms.TextInput(attrs={'class': "large"})
     class Meta:
         model = Sentinel
-        fields = ['name', 'tag', 'freq', 'active']
+        fields = ['name', 'freq', 'active']
         widgets = {
             'name': forms.TextInput(attrs={'class': "large"}),
         }

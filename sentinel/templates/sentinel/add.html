@@ -1,10 +1,16 @@
 {% extends "base.html" %}
 
-{% block title %}Add Watch{% endblock title %}
+{% block title %}Add New Sentinel{% endblock title %}
 
 {% block header %}
-<h3>Adding Watch</h1>
+<h3>Add New Sentinel</h1>
 <style>
+aside {
+  background: #1f8dd6;
+  padding: 1em 1em;
+  border-radius: 3px;
+  color: #fff;
+}
 th {
   padding-right: 10px;
   text-align: left;
@@ -15,7 +21,7 @@ label.required {
 }
 
 .large {
-    width: 200%;
+    width: 70%;
 }
 
 </style>
@@ -23,11 +29,20 @@ label.required {
 
 {% block content %}
 
-<form action="/sentinel/add/" method="POST">
+<form class="pure-form-stacked" action="/sentinels/add/" method="POST">
     {% csrf_token %}
-    <table cellpadding="10">
-        {{ form}}
-    </table>
+
+    {{ form }}
+
+    <p>This will create a new Sentinel with the following settings:</p>
+    <ul>
+    <li>Name is how this sentinel will be listed on the view sentinels page. You should make this name descriptive of the task that will be checking in such as "Production database backup" or "Send daily emails".</li>
+    <li>The Frequency is how often the task runs.  If your task runs once a day this should be 24.  If it runs once a week it should be 168, etc.</li>
+    <li>The URL that this task will use to checkin is</li>
+    </ul>
+    <aside>{{ tagURL }}</aside>
+    <p>
+
     <input type="submit" name="submit" value="Add Sentinel" />
 </form>
 {% endblock content %}

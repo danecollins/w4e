@@ -1,10 +1,16 @@
 {% extends "base.html" %}
 
-{% block title %}Edit Watcher{% endblock title %}
+{% block title %}Edit Sentinel{% endblock title %}
 
 {% block header %}
-<h3>Edit Watcher</h1>
+<h3>Edit Sentinel</h1>
 <style>
+aside {
+  background: #1f8dd6;
+  padding: 0.3em 1em;
+  border-radius: 3px;
+  color: #fff;
+}
 th {
   padding-right: 10px;
   text-align: left;
@@ -22,12 +28,40 @@ label.required {
 {% endblock header %}
 
 {% block content %}
-
-<form action="/sentinel/edit/{{ id }}/" method="POST">
+<style scoped>
+.button-delete {
+  background: rgb(202, 60, 60);
+  font-size: 75%;
+  color: rgb(255,255,255);
+}
+</style>
+<form class="pure-form-stacked" action="/sentinels/edit/{{ id }}/" method="POST">
     {% csrf_token %}
-    <table cellpadding="10">
+
         {{ form }}
-    </table>
+
+
+    <p>This will create a new Sentinel with the following settings:</p>
+    <ul>
+    <li>Name is how this sentinel will be listed on the view sentinels page. You should make this name descriptive of the task that will be checking in such as "Production database backup" or "Send daily emails".</li>
+    <li>The Frequency is how often the task runs.  If your task runs once a day this should be 24.  If it runs once a week it should be 168, etc.</li>
+    <li>When a Sentinel is Active it will notify you if a checkin is missed.  When Inactive it will continue to accept check-ins but will not send notifications when they are missed.</li>
+    <li>The URL that this task will use to checkin is</li>
+    </ul>
+    <aside>{{ tagURL }}</aside>
+    <p>
     <input type="submit" name="submit" value="Save" />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a class="button-delete pure-button" href="/sentinels/delete/{{ id }}">Delete Sentinel</a>
 </form>
+<hr>
+<div class='container'>
+<h3>Recent Checkins for this Sentinel</h3>
+<p>Note: times are UTC</p>
+        <ul>
+            {% for event in event_list %}
+                <li>{{ event.time }}</li>
+            {% endfor %}
+        </ul>
+</div>
 {% endblock content %}

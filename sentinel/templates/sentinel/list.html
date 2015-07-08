@@ -16,15 +16,17 @@
                 <td>Tag</td>
                 <td>Every n hours</td>
                 <td>ID</td>
+                <td># of Checkins</td>
             </tr>
         </thead>
         <tbody>
         {% for sentinel in wl %}
           <tr>
-            <td><a href="/sentinel/details/{{ sentinel.id }}/">{{ sentinel.name }}</a></td>
+            <td><a href="/sentinels/edit/{{ sentinel.id }}/">{{ sentinel.name }}</a></td>
             <td>{{ sentinel.tag }}</td>
             <td>{{ sentinel.freq }}</td>
             <td>{{ sentinel.id }}</td>
+            <td>{{ sentinel.num_ci }}</td>
           </tr>
         {% endfor %}
         </tbody>
