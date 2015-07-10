@@ -50,6 +50,8 @@ ACCOUNT_ACTIVATION_DAYS = 7
 REGISTRATION_AUTO_LOGIN = True
 SITE_ID = 1
 LOGIN_REDIRECT_URL = "/sentinels/list/"
+AUTHENTICATION_BACKENDS = ('sentinel.backends.CaseInsensitiveModelBackend',)
+
 
 # Postmark email setup
 EMAIL_BACKEND = 'postmark.django_backend.EmailBackend'

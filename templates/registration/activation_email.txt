@@ -13,7 +13,10 @@ http://{{site.domain}}{% url 'registration_activate' activation_key %}
 
 {% blocktrans with site_name=site.name %}
 Sincerely,
+
+Dane Collins
 {{ site_name }}
+Keeping your sites running smoothly
 {% endblocktrans %}
 
 
