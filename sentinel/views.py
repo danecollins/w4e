@@ -35,7 +35,7 @@ def add(request):
             stn = form.save(commit=False)
             stn.user = request.user
             stn.save()
-            return redirect('/sentinel/list/')
+            return redirect('/sentinels/list/')
     else:
         tag = id_generator()
         form = SentinelAddForm(initial={'tag': tag})
@@ -51,7 +51,7 @@ def edit(request, id):
         form = SentinelEditForm(request.POST, instance=stn)
         if form.is_valid():
             form.save()
-            return redirect('/sentinel/list/')
+            return redirect('/sentinels/list/')
     else:
         stn = Sentinel.objects.get(id=id)
         form = SentinelEditForm(instance=stn)
