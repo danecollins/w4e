@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}Contact Info{% endblock %}
+
+{% block header %}<h1>Notification Preferences</h1>{% endblock %}
+
+{% block content %}
+<form class="pure-form-stacked" method="post" action="">
+    {% csrf_token %}
+    <div>
+        {{ form.as_p }}
+    </div>
+    <input type="submit" value="{% trans 'Save' %}" />
+</form>
+
+{% endblock %}
+
+
+<!-- templates/contact_info_form.html -->

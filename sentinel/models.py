@@ -5,7 +5,7 @@ import string
 import random
 import pytz
 
-pst = pytz.timezone('America/Los_Angeles')
+utc = pytz.timezone('UTC')
 
 
 def id_generator(size=8, chars=string.ascii_uppercase + string.digits):
@@ -38,7 +38,7 @@ class Event(models.Model):
         return event_list
 
     def __str__(self):
-        tm = self.time.astimezone(pst)
+        tm = self.time.astimezone(utc)
         time_str = tm.strftime('%h-%d %H:%M')
         return 'Event({},{},{})'.format(self.tag,
                                         time_str,
@@ -70,3 +70,18 @@ class Sentinel(models.Model):
                                                                           self.tag,
                                                                           self.freq,
                                                                           self.active)
+# ############################################################################## CONTACT
+
+
+class ContactInfo(models.Model):
+    SMS = 'SMS'
+    EMAIL = 'EMAIL'
+    CONTACT_CHOICES = (
+        (SMS, 'SMS'),
+        (EMAIL, 'Email')
+    )
+    user = models.OneToOneField(User, primary_key=True)
+    contact_by = models.CharField(max_length=5, choices=CONTACT_CHOICES, default=EMAIL)
+    email = models.CharField(max_length=40, blank=True)
+    number = models.CharField(max_length=16, blank=True)
+

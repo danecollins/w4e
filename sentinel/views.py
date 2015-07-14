@@ -5,8 +5,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
-from sentinel.models import Event, Sentinel, id_generator
-from sentinel.forms import SentinelAddForm, SentinelEditForm
+from sentinel.models import Event, Sentinel, id_generator, ContactInfo
+from sentinel.forms import SentinelAddForm, SentinelEditForm, ContactInfoForm
+
 from django.utils import timezone
 import sys
 
@@ -59,7 +60,7 @@ def edit(request, id):
         # limit to 20
         event_list = event_list[:20]
         return render(request, 'sentinel/edit.html', {'form': form, 'id': id,
-                                                       'tagURL': url, 'event_list': event_list})
+                                                      'tagURL': url, 'event_list': event_list})
 
 
 @login_required
@@ -74,6 +75,24 @@ def delete(request, id):
 #     event_list = Event.objects.filter(tag=stn.tag)
 #     return render(request, 'sentinel/details.html',
 #                   {'stn': stn, 'event_list': event_list})
+
+@login_required
+def contact(request):
+    user = request.user
+    try:
+        ci = ContactInfo.objects.get(user=user)
+    except:
+        ci = ContactInfo(user=user, email=user.email)
+        ci.save()
+
+    # seems to be proper way to handle get or post request
+    form = ContactInfoForm(request.POST or None, instance=ci)
+
+    if request.method == 'POST' and form.is_valid():
+        print('saved user form', file=sys.stderr)
+        ci = form.save()
+        return redirect('/accounts/contact/')
+    return render(request, 'registration/contact_info_form.html', {'form': form})
 
 
 def checkin(request, tag):
