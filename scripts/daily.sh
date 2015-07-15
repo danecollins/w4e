@@ -6,7 +6,7 @@ date >> ~/daily.log
 source ~/env/w4e/bin/activate
 
 scripts/backup_prod.sh
-curl http://watch4.events/checkin/9YZNCBAR/ > /dev/null
+curl -L http://watch4.events/checkin/6ASEG0I3/ > /dev/null
 
 echo dropping database
 dropdb w4e_prod >> ~/daily.log 2>&1
