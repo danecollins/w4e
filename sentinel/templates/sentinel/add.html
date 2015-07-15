@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 
-{% block title %}Add New Sentinel{% endblock title %}
+{% block title %}Add New Monitor{% endblock title %}
 
 {% block header %}
-<h3>Add New Sentinel</h1>
+<h3>Add New Monitor</h1>
 <style>
 aside {
   background: #1f8dd6;
@@ -34,15 +34,15 @@ label.required {
 
     {{ form }}
 
-    <p>This will create a new Sentinel with the following settings:</p>
+    <p>This will create a new Monitor with the following settings:</p>
     <ul>
-    <li>Name is how this sentinel will be listed on the view sentinels page. You should make this name descriptive of the task that will be checking in such as "Production database backup" or "Send daily emails".</li>
+    <li>Name is how this Monitor will be listed on the View Monitors page. You should make this name descriptive of the task that will be checking in such as "Production database backup" or "Send daily emails".</li>
     <li>The Frequency is how often the task runs.  If your task runs once a day this should be 24.  If it runs once a week it should be 168, etc.</li>
     <li>The URL that this task will use to checkin is</li>
     </ul>
     <aside>{{ tagURL }}</aside>
     <p>
 
-    <input type="submit" name="submit" value="Add Sentinel" />
+    <input type="submit" name="submit" value="Add Monitor" />
 </form>
 {% endblock content %}
