@@ -4,6 +4,8 @@ import sys
 import django
 from django.conf import settings
 from django.utils import timezone
+from django.core.mail import send_mail
+
 import requests
 import datetime
 import pytz
@@ -47,7 +49,8 @@ def missing_events(debug=False):
                     if ci.contact_type == ContactInfo.SMS:
                         print('TBD: Need to send sms to {}'.format(ci.number))
                     else:
-                        print('TBD: Need to send email to {}'.format(ci.email))
+                        send_mail('watch4.events: event missed', msg, 'monitor@watch4.events',
+                                  [ci.email], fail_silently=False)
                 else:
                     if debug:
                         print('Last "{}"'.format(w.name))
