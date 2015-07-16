@@ -1,10 +1,3 @@
-{% extends "base.html" %}
-
-{% block title %}Checkin{% endblock title %}
-
-{% block header %}
-<h3>Tag: {{ tag }} checked in on {{ now }}.</h1>
-{% endblock header %}
-
-{% block content %}
-{% endblock content %}
+<html>
+Added checkin for tag "{{event.tag}}" on {{event.time}} UTC for monitor named "{{event.sentinel.name}}".
+</html>

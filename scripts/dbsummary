@@ -12,9 +12,9 @@ from django.contrib.auth.models import User
 
 
 def summary():
-    u = Event.objects.all()
-    p = Sentinel.objects.all()
-    message = 'There are %d events and %d sentinels' % (len(u), len(p))
+    u = Event.objects.count()
+    p = Sentinel.objects.count()
+    message = 'There are %d events and %d sentinels' % (u, p)
     print(message)
 
 if __name__ == '__main__':
