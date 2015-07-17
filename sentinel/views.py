@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.views.generic import TemplateView
 
 # Create your views here.
 from sentinel.models import Event, Sentinel, id_generator, ContactInfo
@@ -12,8 +13,15 @@ from sentinel.forms import SentinelAddForm, SentinelEditForm, ContactInfoForm
 import sys
 
 
+def index(request):
+    if request.user.is_anonymous():
+        return TemplateView.as_view(template_name="index.html")(request)
+    else:
+        return redirect('/sentinels/list')
+
+@login_required
 def event_history(request):
-    event_list = Event.recent()
+    event_list = Event.recent(user=request.user)
     return render(request, 'sentinel/events.html',
                   {'event_list': event_list})
 
