@@ -1,9 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.mail import send_mail
 
 import string
 import random
 import pytz
+import datetime
 
 utc = pytz.timezone('UTC')
 from django.utils import timezone
@@ -20,6 +22,26 @@ class Sentinel(models.Model):
     freq = models.IntegerField()
     user = models.ForeignKey(User)
     active = models.BooleanField(default=True, blank=True)
+
+    def missed_checkin(self):
+        grace_period = 2  # minutes
+
+        # skip inactive and never checked in
+        if self.active and Event.objects.filter(sentinel=self).exists():
+            delta = datetime.timedelta(hours=self.freq, minutes=grace_period)
+            expected = timezone.now() - delta
+
+            # get last checkin
+            last = Event.objects.filter(sentinel=self).order_by('-id')[0]
+            if last.log_type == Event.LOG:
+                if last.time < expected:
+                    return last
+            else:
+                # already notified on this
+                return False
+
+        else:
+            return False
 
     def __str__(self):
         return 'Sentinel({},{},{},{},{})'.format(self.name,
@@ -49,7 +71,6 @@ class Event(models.Model):
     log_type = models.CharField(max_length=3,
                                 choices=TYPE_CHOICES,
                                 default=LOG)
-
 
     @classmethod
     def add_event(cls, tag, type):
@@ -98,7 +119,7 @@ class Event(models.Model):
                                           self.log_type)
 
     def __repr__(self):
-        return 'Event({},{},{}'.format(self.tag, self.time, self.log_type)
+        return 'Event({},{},{})'.format(self.tag, self.time, self.log_type)
 
 
 # ############################################################################## CONTACT
@@ -113,6 +134,39 @@ class ContactInfo(models.Model):
     contact_by = models.CharField(max_length=5, choices=CONTACT_CHOICES, default=EMAIL)
     email = models.CharField(max_length=40, blank=True)
     number = models.CharField(max_length=16, blank=True)
+
+    @classmethod
+    def create_default(cls, user):
+        ci = cls(user=user, email=user.email)
+        ci.save
+        return ci
+
+    def send_notification(self, event):
+        if self.contact_by == ContactInfo.SMS:
+            print('TBD: Need to send sms to {}'.format(self.number))
+        else:
+            # print('sending email to {}'.format(self.email))
+            message = '''
+Hi,
+
+Monitor "{}" has detected a missed checkin.
+
+The last checkin was at: {:%m/%d %H:%M}
+
+Checkins for this task are supposed to happen every {} hours.
+
+Visit you account: http://watch4.events
+
+Regards,
+
+dane@dacxl.com
+watch4.events
+'''
+            message = message.format(event.sentinel.name, event.time, event.sentinel.freq)
+            # print(message)
+            subject = 'watch4.events: missed checkin report'
+            send_mail(subject, message, 'dane@dacxl.com', [self.email], fail_silently=False)
+            Event.add_notification(tag=event.sentinel.tag)
 
     def __str__(self):
         return '<ContactInfo: {}'.format(self.user.username)
