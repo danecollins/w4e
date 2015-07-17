@@ -1,19 +1,30 @@
-from django.contrib.auth.backends import ModelBackend
-from django.contrib.auth.models import User
+from __future__ import unicode_literals
+from django.contrib.auth import authenticate
+from django import forms
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 
-class CaseInsensitiveModelBackend(ModelBackend):
-  """
-  By default ModelBackend does case _sensitive_ username authentication, which isn't what is
-  generally expected.  This backend supports case insensitive username authentication.
-  """
+class UserCreationForm:
+    def clean_username(self):  # Ensures lowercase usernames
+        username = self.cleaned_data.get("username")
+        return username.lower()   # Only lower case allowed
 
-  def authenticate(self, username=None, password=None):
-    try:
-      user = User.objects.get(username__iexact=username)
-      if user.check_password(password):
-        return user
-      else:
-        return None
-    except User.DoesNotExist:
-      return None
+
+class AuthenticationForm:
+    def clean(self):
+        username = self.cleaned_data.get('username').lower()
+        password = self.cleaned_data.get('password')
+
+        if username and password:
+            self.user_cache = authenticate(username=username,
+                                           password=password)
+            if self.user_cache is None:
+                raise forms.ValidationError(
+                    self.error_messages['invalid_login'],
+                    code='invalid_login',
+                    params={'username': self.username_field.verbose_name},
+                )
+            else:
+                self.confirm_login_allowed(self.user_cache)
+
+        return self.cleaned_data

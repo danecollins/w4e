@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from sentinel.models import Event, Sentinel, id_generator, ContactInfo
 from sentinel.forms import SentinelAddForm, SentinelEditForm, ContactInfoForm
 
-from django.utils import timezone
+
 import sys
 
 
@@ -96,9 +96,8 @@ def contact(request):
 
 
 def checkin(request, tag):
-    now = timezone.now()
     # make sure the url argument parsing did not leave spaces of trailing /
     tag = tag.strip('/ ')
-    e = Event(tag=tag, log_type=Event.LOG, time=now)
-    e.save()
-    return render(request, 'sentinel/checkin.html', {'tag': tag, 'now': now})
+
+    evt = Event.add_checkin(tag)
+    return render(request, 'sentinel/checkin.html', {'event': evt})
