@@ -23,13 +23,16 @@ class Sentinel(models.Model):
     user = models.ForeignKey(User)
     active = models.BooleanField(default=True, blank=True)
 
-    def missed_checkin(self):
+    def missed_checkin(self, test=False):
         grace_period = 2  # minutes
 
         # skip inactive and never checked in
         if self.active and Event.objects.filter(sentinel=self).exists():
             delta = datetime.timedelta(hours=self.freq, minutes=grace_period)
-            expected = timezone.now() - delta
+            if test:
+                expected = test - delta
+            else:
+                expected = timezone.now() - delta
 
             # get last checkin
             last = Event.objects.filter(sentinel=self).order_by('-id')[0]
@@ -75,8 +78,7 @@ class Event(models.Model):
     @classmethod
     def add_event(cls, tag, type):
         s = Sentinel.objects.get(tag=tag)
-        now = timezone.now()
-        e = cls(time=now, tag=tag, sentinel=s, log_type=type)
+        e = cls(tag=tag, sentinel=s, log_type=type)
         e.save()
         return e
 
@@ -169,4 +171,4 @@ watch4.events
             Event.add_notification(tag=event.sentinel.tag)
 
     def __str__(self):
-        return '<ContactInfo: {}'.format(self.user.username)
+        return '<ContactInfo: {}>'.format(self.user.username)
