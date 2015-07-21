@@ -2,6 +2,7 @@
 import os
 import sys
 import django
+import config.settings
 
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
@@ -22,6 +23,9 @@ def missing_events(debug=False):
 
 
 if __name__ == '__main__':
+    host = config.settings.DATABASES['default']['HOST'] or 'localhost'
+    print('\nUsing server: {}'.format(host))
+    print('Using database: {}\n'.format(config.settings.DATABASES['default']['NAME']))
     if len(sys.argv) == 2:
         missing_events(debug=True)
     else:
