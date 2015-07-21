@@ -7,6 +7,8 @@ import random
 import pytz
 import datetime
 
+import sys
+
 utc = pytz.timezone('UTC')
 from django.utils import timezone
 
@@ -23,7 +25,7 @@ class Sentinel(models.Model):
     user = models.ForeignKey(User)
     active = models.BooleanField(default=True, blank=True)
 
-    def missed_checkin(self, test=False):
+    def missed_checkin(self, test=False, debug=False):
         grace_period = 2  # minutes
 
         # skip inactive and never checked in
@@ -34,16 +36,28 @@ class Sentinel(models.Model):
             else:
                 expected = timezone.now() - delta
 
+            if debug:
+                print('Working on {}'.format(self))
+                print('   expected = {}'.format(expected))
+
             # get last checkin
             last = Event.objects.filter(sentinel=self).order_by('-id')[0]
+            if debug:
+                print('   last = {}'.format(last))
             if last.log_type == Event.LOG:
                 if last.time < expected:
+                    if debug:
+                        print('   missed event')
                     return last
             else:
                 # already notified on this
+                if debug:
+                    print('   already notified')
                 return False
 
         else:
+            if debug:
+                print('Skipping {!r} because inactive'.format(self))
             return False
 
     def __str__(self):

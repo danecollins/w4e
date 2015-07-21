@@ -12,8 +12,8 @@ from sentinel.models import Sentinel, ContactInfo
 
 def missing_events(debug=False):
     for stn in Sentinel.objects.all():
-        status = stn.missed_checkin()
-        if status:
+        status = stn.missed_checkin(debug=debug)
+        if status and not debug:
             try:
                 ci = stn.user.contactinfo
             except:
