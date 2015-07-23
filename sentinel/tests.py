@@ -95,6 +95,5 @@ class TestViewHome(TestCase):
     def test_check_links(self):
         c = Client()
         text = c.get('/').content
-        self.assertTrue(text.find('Sign In') <> -1)
-        self.assertTrue(text.find('Sign Up') <> -1)
-
+        self.assertTrue(text.find('Sign In') != -1)
+        self.assertTrue(text.find('Sign Up') != -1)
