@@ -119,3 +119,43 @@ USE_L10N = True
 
 USE_TZ = True
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'with_date': {
+            'format': '%(asctime)s %(levelname)s; %(message)s',
+            'datefmt': '%Y-%m-%d %H:%M:%S',
+        },
+        'simple': {
+            'format': '%(asctime)s w4e %(levelname)s: %(message)s',
+            'datefmt': '%Y-%m-%dT%H:%M:%S',
+        }
+    },
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'debug.log'),
+            'formatter': 'with_date',
+        },
+        'SysLog': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.SysLogHandler',
+            'formatter': 'simple',
+            'address': ('logs2.papertrailapp.com', 55691)
+        }
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['file', 'SysLog'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'w4e': {
+            'handlers': ['file', 'SysLog'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    }
+}
