@@ -175,14 +175,15 @@ The last checkin was at: {:%m/%d %H:%M}
 
 Checkins for this task are supposed to happen every {} hours.
 
-Visit you account: http://watch4.events
+View Monitor details at: http://watch4.events/sentinels/edit/{}
 
 Regards,
 
 dane@dacxl.com
 watch4.events
 '''
-            message = message.format(event.sentinel.name, event.time, event.sentinel.freq)
+            message = message.format(event.sentinel.name, event.time,
+                                     event.sentinel.freq, event.sentinel.id)
             # print(message)
             subject = 'watch4.events: missed checkin report'
             send_mail(subject, message, 'dane@dacxl.com', [self.email], fail_silently=False)

@@ -23,6 +23,9 @@ label.required {
 .large {
     width: 200%;
 }
+.missed {
+  color: red;
+}
 
 </style>
 {% endblock header %}
@@ -57,10 +60,10 @@ label.required {
 <hr>
 <div class='container'>
 <h3>Recent Checkins for this Monitor</h3>
-<p>Note: times are UTC</p>
+<p>Note: times are UTC, notifications are in RED</p>
         <ul>
             {% for event in event_list %}
-                <li>{{ event.time }}</li>
+                <li {% if event.log_type == 'NOT' %} class="missed" {% endif %}>{{ event.time|date:"d M - H:i" }}</li>
             {% endfor %}
         </ul>
 </div>

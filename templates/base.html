@@ -63,6 +63,7 @@
                     <li class="pure-menu-item"><a href="/accounts/contact/" class="pure-menu-link">Contact Info</a></li>
 
                     <li class="pure-menu-item"><a href="/accounts/logout/" class="pure-menu-link">Logout</a></li>
+                    <li class="pure-menu-item"><a href="#" class="pure-menu-link">Now: <span id="time"></span> UTC</a></li>
                     {% endblock menuitems %}
                 </ul>
             </div><!-- pure-menu -->
@@ -86,6 +87,10 @@
         </div><!-- layout -->
 
         <script src="{% static 'ui.js' %}"></script>
+        <script>
+        var today = new Date();
+        document.getElementById('time').innerHTML=today.getUTCHours()+":"+today.getUTCMinutes();
+        </script>
 
     </body>
     <!-- templates/base.html -->
