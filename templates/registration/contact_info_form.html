@@ -6,7 +6,7 @@
 {% block header %}<h1>Notification Preferences</h1>{% endblock %}
 
 {% block content %}
-<form class="pure-form-stacked" method="post" action="">
+<form class="pure-form-stacked" method="post">
     {% csrf_token %}
     <div>
         {{ form.as_p }}
