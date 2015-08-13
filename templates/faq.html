@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+    
+{% load i18n %}
+    
+{% block title %}W4E FAQ{% endblock %}
+
+{% block style %}
+    .post-description {
+        padding-left: 2em;
+    }
+    .code {
+        background: #ccc;
+        padding-left: .5em;
+        font-family: monospace;
+        white-space: pre;
+    }
+{% endblock style %}
+
+{% block header %}
+<h1>Watch For Events FAQ</h1>
+{% endblock header %}
+
+{% block content %}
+
+<div class="post">
+    <header class="post-header">
+    <h2 class="post-title">How to checkin from bash script</h2>
+    </header>
+    <div class="post-description">
+        <p>You can use <strong>curl</strong> or <strong>wget</strong> commands to checkin from a shell script. For example, using curl you would use:</p>
+        <div class="code">curl -L http://watch4.events/checkin/9YZNCBAR/</div>
+        <p><i>Note: currently you must use the -L option on curl so that the domain name redirect is performed</i></p>
+    </div>
+</div>
+
+<div class="post">
+    <header class="post-header">
+    <h2 class="post-title">How to checkin from python</h2>
+    </header>
+    <div class="post-description">
+        <p>There are several ways to checkin from python but this is one example:</p>
+        <div class="code">try:
+    # For Python 3.0 and later
+    from urllib.request import urlopen
+except ImportError:
+    # Fall back to Python 2's urllib2
+    from urllib2 import urlopen
+response = urlopen("http://watch4.events/checkin/9YZNCBAR/")
+response_text = response.read()</div>
+    </div>
+</div>
+{% endblock %}

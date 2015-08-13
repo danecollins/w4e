@@ -43,7 +43,8 @@
         .pure-menu-heading {
             padding: 0;
         }
-
+        {% block style %}
+        {% endblock style %}
         </style>
     </head>
 
@@ -61,7 +62,7 @@
                     <li class="pure-menu-item"><a href="/sentinels/add/" class="pure-menu-link">Add Monitor</a></li>
                     <li class="pure-menu-item"><a href="/events/history/" class="pure-menu-link">View Events</a></li>
                     <li class="pure-menu-item"><a href="/accounts/contact/" class="pure-menu-link">Contact Info</a></li>
-
+                    <li class="pure-menu-item"><a href="/faq/" class="pure-menu-link">FAQ</a></li>
                     <li class="pure-menu-item"><a href="/accounts/logout/" class="pure-menu-link">Logout</a></li>
                     <li class="pure-menu-item"><a href="#" class="pure-menu-link">Now: <span id="time"></span> UTC</a></li>
                     {% endblock menuitems %}

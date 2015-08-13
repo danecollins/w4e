@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
+from django.views.generic import TemplateView
 from sentinel import views
 
 
@@ -14,4 +15,5 @@ urlpatterns = patterns('',
     url(r'^sentinels/', include('sentinel.urls')),
     url(r'^checkin/(?P<tag>.*)[/]*$', views.checkin),
     url(r'^events/history/$', views.event_history),
+    url(r'^faq/', TemplateView.as_view(template_name="faq.html"))
 )
