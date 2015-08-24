@@ -98,6 +98,12 @@ class Event(models.Model):
 
     @classmethod
     def add_checkin(cls, tag):
+        # check if this is the first checkin after a failure and if so, notify user
+        last_event = cls.objects.filter(tag=tag).order_by('-id')[0]
+        if last_event.log_type == cls.NOTIFICATION:
+            ci = last_event.sentinel.user.contactinfo
+            ci.send_repair(last_event)
+
         return cls.add_event(tag, cls.LOG)
 
     @classmethod
@@ -188,6 +194,31 @@ watch4.events
             subject = 'watch4.events: missed checkin report'
             send_mail(subject, message, 'dane@dacxl.com', [self.email], fail_silently=False)
             Event.add_notification(tag=event.sentinel.tag)
+
+    def send_repair(self, event):
+        if self.contact_by == ContactInfo.SMS:
+            print('TBD: Need to send sms to {}'.format(self.number))
+        else:
+            # print('sending email to {}'.format(self.email))
+            message = '''
+Hi,
+
+Monitor "{}" has successfully checked in after a failure.
+
+The failed checkin was at: {:%m/%d %H:%M}
+
+View Monitor details at: http://watch4.events/sentinels/edit/{}
+
+Regards,
+
+dane@dacxl.com
+watch4.events
+'''
+            message = message.format(event.sentinel.name, event.time,
+                                     event.sentinel.id)
+            # print(message)
+            subject = 'watch4.events: fixed checkin report'
+            send_mail(subject, message, 'dane@dacxl.com', [self.email], fail_silently=False)
 
     def __str__(self):
         return '<ContactInfo: {}>'.format(self.user.username)
