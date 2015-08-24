@@ -96,4 +96,4 @@ class TestViewHome(TestCase):
         c = Client()
         text = c.get('/').content
         self.assertTrue(text.find('Sign In') != -1)
-        self.assertTrue(text.find('Sign Up') != -1)
+        self.assertTrue(text.find('Request Beta Invite') != -1)

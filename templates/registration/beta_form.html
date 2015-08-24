@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}Beta Invite{% endblock %}
+
+{% block header %}<h1>Beta Invite Request</h1>{% endblock %}
+
+
+
+{% block content %}
+<p>
+Thanks for wanting to try us out. Please complete the form below and we will contact you shortly.
+</p>
+<form class="pure-form-stacked" method="post">
+    {% csrf_token %}
+    <div>
+        {{ form.as_p }}
+    </div>
+    <input type="submit" value="{% trans 'Request' %}" />
+</form>
+
+{% endblock %}
+
+
+<!-- templates/contact_info_form.html -->

@@ -65,3 +65,11 @@ class ContactInfoForm(forms.ModelForm):
                 raise forms.ValidationError('Number does not have 10 other digits')
 
         return n
+
+
+class BetaForm(forms.Form):
+    required_css_class = 'required'
+    first_name = forms.CharField(label='First Name', max_length=40, required=True)
+    last_name = forms.CharField(label='Last Name', max_length=50, required=True)
+    email = forms.EmailField()
+    company = forms.CharField(label='Company', max_length=50, required=True)

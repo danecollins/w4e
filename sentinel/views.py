@@ -10,10 +10,11 @@ import socket
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
+from django.core.mail import send_mail
 
 # app
 from sentinel.models import Event, Sentinel, id_generator, ContactInfo
-from sentinel.forms import SentinelAddForm, SentinelEditForm, ContactInfoForm
+from sentinel.forms import SentinelAddForm, SentinelEditForm, ContactInfoForm, BetaForm
 
 
 logger = logging.getLogger('w4e')
@@ -136,3 +137,28 @@ def checkin(request, tag):
     evt = Event.add_checkin(tag)
     log_view(request, 'checkin - {}'.format(tag))
     return render(request, 'sentinel/checkin.html', {'event': evt})
+
+
+def beta(request):
+    form = BetaForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid():
+        message = '''
+Hi,
+
+Here is a beta request:
+First Name: {}
+Last Name:  {}
+email:      {}
+Company:    {}
+
+'''
+        message = message.format(form.cleaned_data['first_name'],
+                                 form.cleaned_data['last_name'],
+                                 form.cleaned_data['email'],
+                                 form.cleaned_data['company'])
+        # print(message)
+        subject = 'watch4.events: new beta request!'
+        send_mail(subject, message, 'dane@dacxl.com', ['dane@dacxl.com'], fail_silently=False)
+        return render(request, 'registration/thank_you.html')
+    else:
+        return render(request, 'registration/beta_form.html', {'form': form})
