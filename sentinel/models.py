@@ -99,10 +99,12 @@ class Event(models.Model):
     @classmethod
     def add_checkin(cls, tag):
         # check if this is the first checkin after a failure and if so, notify user
-        last_event = cls.objects.filter(tag=tag).order_by('-id')[0]
-        if last_event.log_type == cls.NOTIFICATION:
-            ci = last_event.sentinel.user.contactinfo
-            ci.send_repair(last_event)
+        last_event = cls.objects.filter(tag=tag).order_by('-id')
+        if last_event:
+            last_event = last_event[0]
+            if last_event.log_type == cls.NOTIFICATION:
+                ci = last_event.sentinel.user.contactinfo
+                ci.send_repair(last_event)
 
         return cls.add_event(tag, cls.LOG)
 
