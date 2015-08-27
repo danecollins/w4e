@@ -52,7 +52,6 @@ SITE_ID = 1
 LOGIN_REDIRECT_URL = "/sentinels/list/"
 
 
-
 # Postmark email setup
 EMAIL_BACKEND = 'postmark.django_backend.EmailBackend'
 POSTMARK_API_KEY = os.environ.get('POSTMARK_API_KEY')
@@ -107,7 +106,7 @@ STATICFILES_DIRS = (
 )
 
 # Add a project level template file
-TEMPLATE_DIRS = [ os.path.join(BASE_DIR, 'templates') ]
+TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
 
 LANGUAGE_CODE = 'en-us'
 

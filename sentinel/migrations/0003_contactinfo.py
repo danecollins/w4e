@@ -17,7 +17,8 @@ class Migration(migrations.Migration):
             name='ContactInfo',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('contact_by', models.CharField(default=b'EMAIL', max_length=5, choices=[(b'SMS', b'SMS'), (b'EMAIL', b'Email')])),
+                ('contact_by', models.CharField(default=b'EMAIL', max_length=5, choices=[(b'SMS', b'SMS'),
+                                                                                         (b'EMAIL', b'Email')])),
                 ('email', models.CharField(max_length=40, blank=True)),
                 ('number', models.CharField(max_length=12, blank=True)),
                 ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, unique=True)),

@@ -47,7 +47,7 @@ def event_history(request):
 
 
 @login_required
-def list(request):
+def list_monitors(request):
     stn_list = Sentinel.objects.filter(user=request.user)
     log_view(request, 'list_monitors - {}'.format(len(stn_list)))
     for stn in stn_list:
