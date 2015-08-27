@@ -49,4 +49,21 @@ response = urlopen("http://watch4.events/checkin/9YZNCBAR/")
 response_text = response.read()</div>
     </div>
 </div>
+
+<div class="post">
+    <header class="post-header">
+    <h2 class="post-title">How to checkin from a windows batch file</h2>
+    </header>
+    <div class="post-description">
+        <p>In windows you can checkin using powershell.  This command passes the url as a command line argument to powershell eliminating the need to create a separate powershell script.</p>
+        <p>One issue is that watch4.events has a URL re-direct to w4e.herokuapp.com which does not work with the WebClient.Download so you must use the w4e.herokuapp.com domain in the checkin URL as shown below.
+        <div class="code">
+powershell -Command "& { (new-object System.Net.WebClient).DownloadFile('http://w4e.herokuapp.com
+/checkin/CA309J0K','c:\windows\temp\dummy.txt') } "
+        </div>
+        Note there is no line break after the .com, one is shown above just for legibility.
+    </div>
+</div>
+
+
 {% endblock %}
