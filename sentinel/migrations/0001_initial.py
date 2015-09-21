@@ -16,7 +16,8 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('time', models.DateTimeField(auto_now_add=True)),
                 ('tag', models.CharField(max_length=30)),
-                ('log_type', models.CharField(default=b'LOG', max_length=3, choices=[(b'LOG', b'Log'), (b'NOT', b'Notification')])),
+                ('log_type', models.CharField(default=b'LOG', max_length=3, choices=[(b'LOG', b'Log'),
+                                                                                     (b'NOT', b'Notification')])),
             ],
         ),
         migrations.CreateModel(

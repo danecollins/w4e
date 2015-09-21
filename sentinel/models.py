@@ -113,11 +113,11 @@ class Event(models.Model):
         return cls.add_event(tag, cls.NOTIFICATION)
 
     @classmethod
-    def recent(self, user=False):
+    def recent(cls, user=False):
         if user:
-            events = Event.objects.filter(sentinel__user=user).order_by('-id')[:30]
+            events = cls.objects.filter(sentinel__user=user).order_by('-id')[:30]
         else:
-            events = Event.objects.all().order_by('-id')[:30]
+            events = cls.objects.all().order_by('-id')[:30]
 
         tags = set([x.tag for x in events])
         tag_name = {tag: Sentinel.objects.get(tag=tag).name for tag in tags}
