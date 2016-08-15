@@ -25,7 +25,7 @@ fi
 
 echo "INFO: heroku pull completed" >> ~/daily.log
 export DATABASE_URL=postgres:///w4e_prod
-scripts/dbsummary.py >> ~/daily.log 2>&1
+scripts/dbsummary >> ~/daily.log 2>&1
 
 echo -n "*** end W4E daily script **************************************" >> ~/daily.log
 

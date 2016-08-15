@@ -166,7 +166,7 @@ class ContactInfo(models.Model):
     @classmethod
     def create_default(cls, user):
         ci = cls(user=user, email=user.email)
-        ci.save
+        ci.save()
         return ci
 
     def send_notification(self, event):
