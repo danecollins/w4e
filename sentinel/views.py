@@ -159,7 +159,10 @@ Company:    {}
                                  form.cleaned_data['company'])
         # print(message)
         subject = 'watch4.events: new beta request!'
+        log_view(request, 'beta request from {} {}'.format(form.cleaned_data['first_name'],
+                                                           form.cleaned_data['last_name']))
         send_mail(subject, message, 'dane@dacxl.com', ['dane@dacxl.com'], fail_silently=False)
         return render(request, 'registration/thank_you.html')
     else:
+        log_view(request, 'beta form')
         return render(request, 'registration/beta_form.html', {'form': form})
