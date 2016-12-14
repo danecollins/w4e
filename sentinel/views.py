@@ -21,13 +21,14 @@ logger = logging.getLogger('w4e')
 
 
 def log_view(request, msg):
-    hostname = socket.gethostname()
-    hostname = hostname.replace('.local', '')
+    if request:
+        m = request.META
+        ipaddr = m.get('REMOTE_ADDR', '')
     if request.user.is_anonymous():
         u = 'anonymous'
     else:
         u = request.user.username
-    logger.info('{}:{} - view - {}'.format(hostname[:8], u, msg))
+    logger.info('{}:{} - view - {}'.format(ipaddr, u, msg))
 
 
 def index(request):
