@@ -136,7 +136,8 @@ def checkin(request, tag):
     tag = tag.strip('/ ')
 
     evt = Event.add_checkin(tag)
-    log_view(request, 'checkin - {}'.format(tag))
+    if evt:
+        log_view(request, 'checkin - {}'.format(tag))
     return render(request, 'sentinel/checkin.html', {'event': evt})
 
 

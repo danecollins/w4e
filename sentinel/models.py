@@ -91,10 +91,14 @@ class Event(models.Model):
 
     @classmethod
     def add_event(cls, tag, type):
+        # only store event if the sentinel is active
         s = Sentinel.objects.get(tag=tag)
-        e = cls(tag=tag, sentinel=s, log_type=type)
-        e.save()
-        return e
+        if s.active:
+            e = cls(tag=tag, sentinel=s, log_type=type)
+            e.save()
+            return e
+        else:
+            return None
 
     @classmethod
     def add_checkin(cls, tag):
