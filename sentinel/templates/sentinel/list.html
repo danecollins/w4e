@@ -17,6 +17,7 @@
                 <td>Every n hours</td>
                 <td>ID</td>
                 <td># of Checkins</td>
+                <td>Last</td>
             </tr>
         </thead>
         <tbody>
@@ -27,6 +28,7 @@
             <td>{{ sentinel.freq }}</td>
             <td>{{ sentinel.id }}</td>
             <td>{{ sentinel.num_ci }}</td>
+            <td>{{ sentinel.last }}</td>
           </tr>
         {% endfor %}
         </tbody>

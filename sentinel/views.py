@@ -1,10 +1,8 @@
-from __future__ import print_function
-from __future__ import unicode_literals
-
 # python
 import logging
 import sys
 import socket
+import datetime
 
 # django
 from django.shortcuts import render, redirect, get_object_or_404
@@ -53,6 +51,12 @@ def list_monitors(request):
     log_view(request, 'list_monitors - {}'.format(len(stn_list)))
     for stn in stn_list:
         stn.num_ci = Event.objects.filter(tag=stn.tag).count()
+        evt = Event.objects.filter(tag=stn.tag).order_by('-time').first()
+        if evt:
+            last_time = evt.time.strftime('%Y-%m-%d %H:%M')
+        else:
+            last_time = 'None'
+        stn.last = last_time
     return render(request, 'sentinel/list.html', {'wl': stn_list})
 
 
